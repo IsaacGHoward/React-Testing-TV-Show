@@ -6,6 +6,7 @@ import parse from "html-react-parser";
 import { formatSeasons } from "./utils/formatSeasons";
 
 import Episodes from "./components/Episodes";
+import {fetchShow} from './api/fetchShow';
 import "./styles.css";
 
 export default function App() {
@@ -13,7 +14,7 @@ export default function App() {
   const [seasons, setSeasons] = useState([]);
   const [selectedSeason, setSelectedSeason] = useState("");
   const episodes = seasons[selectedSeason] || [];
-
+  /*
   useEffect(() => {
     const fetchShow = () => {
       axios
@@ -26,6 +27,14 @@ export default function App() {
         });
     };
     fetchShow();
+  }, []);
+  */
+  useEffect(() => {
+      fetchShow()
+        .then(res => {
+        setShow(res.data);
+        setSeasons(formatSeasons(res.data._embedded.episodes));
+      });
   }, []);
 
   const handleSelect = e => {
